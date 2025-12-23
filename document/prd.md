@@ -14,10 +14,10 @@
 ## 1. Pendahuluan (*Introduction*)
 
 ### 1.1 Ringkasan Eksekutif
-**riziqstore.idn** adalah platform layanan *top-up game* berbasis web yang mengadopsi model **Hybrid Tech**. Dalam fase *Enhanced MVP* ini, sistem mendukung **Dual-Method Input** (Top Up via UID & Jasa Joki via Login) serta dilengkapi fitur **"Smart Subscription Reminder"** untuk retensi pelanggan. Transaksi diselesaikan melalui integrasi *WhatsApp API Gateway* yang aman dan personal.
+**riziqstore.idn** adalah platform layanan *top-up game* berbasis web yang mengadopsi model **Hybrid Tech**. Dalam fase *Enhanced MVP* ini, sistem mendukung **Dual-Method Input** (Top Up via UID & Top Up via Login) serta dilengkapi fitur **"Smart Subscription Reminder"** untuk retensi pelanggan. Transaksi diselesaikan melalui integrasi *WhatsApp API Gateway* yang aman dan personal.
 
 ### 1.2 Tujuan Bisnis
-1.  **Market Expansion:** Mengakomodasi segmen pasar yang membutuhkan layanan Joki/Gift (via Login) yang tidak terlayani oleh kompetitor *mainstream*.
+1.  **Market Expansion:** Mengakomodasi segmen pasar yang membutuhkan layanan Top Up Login (Paket Bundle & Gift) yang seringkali tidak terlayani oleh kompetitor mainstream karena keterbatasan sistem otomatis.
 2.  **Operational Trust:** Membangun kepercayaan melalui fitur *Real-Time Store Status* (Indikator Buka/Tutup).
 3.  **Retention:** Meningkatkan pembelian ulang melalui notifikasi pengingat otomatis.
 
@@ -26,12 +26,12 @@
 ## 2. Masalah & Solusi (*Problem & Solution*)
 
 ### 2.1 Latar Belakang Masalah (*Pain Points*)
-* **Keterbatasan Platform:** Banyak web top up hanya melayani UID, padahal mahasiswa sering mencari jasa Joki Rank yang membutuhkan akses login.
+* **Keterbatasan Platform:** Banyak web top up hanya melayani UID, padahal mahasiswa sering membutuhkan akses login untuk membeli paket bundle khusus.
 * **Uncertainty:** Pengguna sering kecewa order di jam malam tapi tidak diproses karena toko tutup tanpa pemberitahuan.
 * **Subscription Amnesia:** Lupa perpanjang paket mingguan/bulanan yang menyebabkan hilangnya bonus *streak*.
 
 ### 2.2 Solusi Produk
-* **Dual-Method Interface:** Satu halaman web untuk dua kebutuhan: Form UID (Top Up Kilat) dan Form Login (Jasa Joki) yang aman.
+* **Dual-Method Interface:** Satu halaman web untuk dua kebutuhan: Form UID (Top Up Kilat) dan Top Up Login (Form Login) yang aman.
 * **Smart Store Status:** Banner otomatis yang mendeteksi jam (10.00-22.00) untuk memberi tahu status toko BUKA/TUTUP.
 * **Interactive Feedback:** Notifikasi *Pop-up* visual saat pesanan berhasil dibuat sebelum dialihkan ke WhatsApp.
 
@@ -43,8 +43,8 @@
 | :--- | :--- |
 | **Nama** | **Rizky (21 Tahun)** |
 | **Peran** | Mahasiswa / *Mid-core Gamer* |
-| **Perilaku** | Sering berganti-ganti antara beli diamond receh dan menyewa jasa joki untuk naik *Rank*. |
-| **Goals** | Butuh platform yang "Palugada" (Apa Lu Mau Gua Ada): Bisa top up, bisa joki, respon cepat, dan aman. |
+| **Perilaku** | Sering berganti-ganti antara beli diamond receh dan membeli paket limited via login |
+| **Goals** | Butuh platform yang "Palugada" (Apa Lu Mau Gua Ada): Bisa top up, bisa Top Up Login, respon cepat, dan aman. |
 
 ---
 
@@ -79,13 +79,13 @@
 
 ## 6. Peta Perjalanan Pengguna (*User Journey Map*)
 
-### Skenario: Order Jasa Joki (Via Login)
+### Skenario: Order Jasa Top Up Login (Via Login)
 
 1.  **Akses:** User buka web jam 14.00 (Banner: BUKA).
-2.  **Input:** Pilih MLBB -> Klik Tab "Via Login" -> Isi Email/Pass -> Pilih Item "Joki Mythic".
+2.  **Input:** Pilih MLBB -> Klik Tab "Via Login" -> Isi Email/Pass -> Pilih Item "Top Up Login".
 3.  **Action:** Klik "Bayar Sekarang".
 4.  **Feedback:** Muncul Pop-up "Pesanan Dibuat!".
-5.  **Finalisasi:** Masuk ke WhatsApp dengan pesan: *"Halo Admin, Order Joki Via Login. Akun: [Email]. Item: Joki Mythic."*
+5.  **Finalisasi:** Masuk ke WhatsApp dengan pesan: *"Halo Admin, Order Top Up Login. Akun: [Email]. Item: [Item]. Nominal: [Nominal]."*
 
 ---
 
