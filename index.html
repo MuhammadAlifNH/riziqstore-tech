@@ -4,349 +4,225 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>riziqstore.idn - Top Up Games</title>
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Inter', sans-serif; padding-bottom: 50px; }
-        .navbar { background-color: #1e293b; border-bottom: 1px solid #334155; padding: 15px 0; }
-        .brand-logo { font-weight: 800; font-size: 1.5rem; color: white; text-transform: uppercase; }
-        .brand-accent { color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
-        
-        /* HOME PAGE: GAME GRID CARD */
-        .game-grid-card {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.3s;
-            cursor: pointer;
-            height: 100%;
-            position: relative;
-        }
-        .game-grid-card:hover {
-            transform: translateY(-5px);
-            border-color: #38bdf8;
-            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.2);
-        }
-        .game-img-wrapper {
-            width: 100%;
-            aspect-ratio: 1 / 1; /* Kotak Sempurna */
-            overflow: hidden;
-            background: #000;
-        }
-        .game-img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: 0.3s;
-        }
-        .game-grid-card:hover img { transform: scale(1.1); }
-        .game-title {
-            padding: 10px;
-            text-align: center;
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: white;
-            background: rgba(30, 41, 59, 0.9);
-        }
-
-        /* ORDER PAGE STYLES */
-        .main-card { background-color: #1e293b; border: 1px solid #334155; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .form-control, .form-select { background-color: #0f172a; border: 2px solid #334155; color: white; border-radius: 10px; padding: 12px; }
-        .form-control:focus, .form-select:focus { border-color: #38bdf8; box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1); }
-        
-        .btn-check:checked + .btn-outline-primary { background-color: #38bdf8; color: #0f172a; font-weight: 700; }
-        .btn-outline-primary { color: #38bdf8; border-color: #38bdf8; }
-        
-        .item-card { background-color: #0f172a; border: 2px solid #334155; border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.2s; position: relative; height: 100%; }
-        .item-card.active { border-color: #38bdf8; background-color: rgba(56, 189, 248, 0.05); }
-        .item-card.active::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: 5px; right: 8px; color: #38bdf8; }
-        
-        .btn-pay { background: linear-gradient(135deg, #0ea5e9, #2563eb); border: none; color: white; font-weight: 700; padding: 15px; border-radius: 12px; width: 100%; font-size: 1.1rem; margin-top: 20px; }
-        .btn-back { background: transparent; border: 1px solid #64748b; color: #cbd5e1; padding: 8px 15px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 15px; }
-        .btn-back:hover { background: #334155; color: white; }
-
-        .step-title { color: #94a3b8; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
+        body{background:#0f172a;color:#e2e8f0;font-family:Inter}
+        .navbar{background:#1e293b;border-bottom:1px solid #334155}
+        .brand-logo{font-weight:800;font-size:1.4rem;color:white}
+        .brand-accent{color:#38bdf8}
+        .game-grid-card{background:#1e293b;border:1px solid #334155;border-radius:14px;cursor:pointer;overflow:hidden}
+        .game-grid-card:hover{border-color:#38bdf8;transform:translateY(-4px)}
+        .game-img-wrapper{aspect-ratio:1/1}
+        .game-img-wrapper img{width:100%;height:100%;object-fit:cover}
+        .game-title{text-align:center;padding:8px;font-weight:700}
+        .main-card{background:#1e293b;border-radius:16px;border:1px solid #334155}
+        .item-card{background:#0f172a;border:2px solid #334155;border-radius:12px;padding:12px;cursor:pointer}
+        .item-card.active{border-color:#38bdf8;background:rgba(56,189,248,.08)}
+        .btn-pay{background:linear-gradient(135deg,#0ea5e9,#2563eb);border:none;border-radius:12px;padding:14px;font-weight:700;width:100%}
     </style>
 </head>
+
 <body>
     <nav class="navbar sticky-top">
-        <div class="container justify-content-center align-items-center">
-            
-            <img src="https://drive.google.com/uc?export=view&id=1qjP_rduN_9Jp3twVoFHJOTxgVMyJt33X" 
-                 alt="Logo RiziqStore" 
-                 style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; margin-right: 10px; border: 2px solid #38bdf8;">
-            
+        <div class="container justify-content-center">
+            <img src="assets/logo.png" style="width:40px;height:40px;border-radius:50%;margin-right:8px">
             <span class="brand-logo">riziqstore<span class="brand-accent">.idn</span></span>
-            
         </div>
     </nav>
 
-    <div class="container mt-4" style="max-width: 500px;">
-        
+    <div class="container mt-4" style="max-width:500px">
+
+        <!-- HOME -->
         <div id="homePage">
-            <div class="text-center mb-4">
-                <h4 class="fw-bold mb-1">Mau Top Up Apa Hari Ini?</h4>
-                <small class="text-muted">Pilih game favoritmu di bawah ini.</small>
-            </div>
-            
-            <div class="row g-3" id="gameGridContainer">
-                </div>
+            <h5 class="text-center mb-3">Mau Top Up Apa Hari Ini?</h5>
+            <div class="row g-3" id="gameGridContainer"></div>
         </div>
 
-        <div id="orderPage" style="display: none;">
-            
-            <button onclick="backToHome()" class="btn-back">
-                <i class="fas fa-arrow-left me-2"></i> Kembali ke Menu
+        <!-- ORDER -->
+        <div id="orderPage" style="display:none">
+        <button class="btn btn-sm btn-secondary mb-2" onclick="backToHome()">
+            <i class="fa fa-arrow-left"></i> Kembali
+        </button>
+
+        <div id="storeStatus" class="alert text-center mb-2">Checking...</div>
+
+        <div class="main-card p-3">
+            <div class="text-center mb-3">
+                <img id="selectedGameImg" style="width:60px;height:60px;border-radius:10px">
+                <h6 id="selectedGameTitle" class="mt-2"></h6>
+            </div>
+
+            <!-- METODE -->
+            <div class="btn-group w-100 mb-3">
+                <input type="radio" class="btn-check" name="metode" id="metodeUid" checked onchange="toggleMetode()">
+                <label class="btn btn-outline-primary" for="metodeUid">Via ID</label>
+                <input type="radio" class="btn-check" name="metode" id="metodeLogin" onchange="toggleMetode()">
+                <label class="btn btn-outline-primary" for="metodeLogin">Via Login</label>
+            </div>
+
+            <!-- UID -->
+            <div id="formUid">
+                <div class="row g-2">
+                    <div class="col-8" id="colUserId"><input id="userId" class="form-control" placeholder="User ID"></div>
+                    <div class="col-4" id="colZoneId"><input id="zoneId" class="form-control" placeholder="Zone ID"></div>
+                </div>
+            </div>
+
+            <!-- LOGIN -->
+            <div id="formLogin" style="display:none">
+                <input id="loginEmail" class="form-control mb-2" placeholder="Email / No HP">
+                <input id="loginPass" type="password" class="form-control mb-2" placeholder="Password">
+                <select id="loginVia" class="form-select">
+                    <option>Moonton</option>
+                    <option>Facebook</option>
+                    <option>VK</option>
+                    <option>TikTok</option>
+                </select>
+            </div>
+
+            <hr>
+            <div class="row g-2" id="itemGrid"></div>
+
+            <hr>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="checkReminder" onchange="toggleReminder()">
+                <label class="form-check-label">Smart Reminder (Gratis)</label>
+            </div>
+            <div id="boxInputWa" style="display:none" class="mt-2">
+                <input id="userWa" class="form-control" placeholder="Nomor WhatsApp">
+            </div>
+
+            <button class="btn-pay mt-3" onclick="kirimPesanan()">
+                <i class="fa fa-wallet me-2"></i>Bayar Sekarang
             </button>
-
-            <div id="storeStatus" class="alert text-center fw-bold mb-2" style="border-radius: 12px; font-size: 0.9rem;">Checking...</div>
-
-            <div class="main-card p-4">
-                <div class="text-center mb-4">
-                    <img id="selectedGameImg" src="" style="width: 60px; height: 60px; border-radius: 12px; object-fit: cover; margin-bottom: 10px;">
-                    <h5 id="selectedGameTitle" class="fw-bold text-white mb-0">Game Name</h5>
-                </div>
-
-                <div class="mb-4">
-                    <div class="step-title">1. Data Akun</div>
-                    <div class="btn-group w-100 mb-3" role="group">
-                        <input type="radio" class="btn-check" name="metodeTopup" id="metodeUid" autocomplete="off" checked onchange="toggleMetode()">
-                        <label class="btn btn-outline-primary" for="metodeUid"><i class="fas fa-id-card me-1"></i> Via ID</label>
-
-                        <input type="radio" class="btn-check" name="metodeTopup" id="metodeLogin" autocomplete="off" onchange="toggleMetode()">
-                        <label class="btn btn-outline-primary" for="metodeLogin"><i class="fas fa-user-shield me-1"></i> Via Login</label>
-                    </div>
-
-                    <div id="formUid">
-                        <div class="row g-2">
-                            <div class="col-8" id="colUserId"><input type="text" class="form-control" id="userId" placeholder="User ID"></div>
-                            <div class="col-4" id="colZoneId"><input type="text" class="form-control" id="zoneId" placeholder="Zone ID"></div>
-                        </div>
-                    </div>
-
-                    <div id="formLogin" style="display: none;">
-                        <div class="mb-2"><input type="text" class="form-control" id="loginEmail" placeholder="Email / No HP"></div>
-                        <div class="mb-2"><input type="text" class="form-control" id="loginPass" placeholder="Password"></div>
-                        <select class="form-select" id="loginVia">
-                            <option value="Moonton">Login Via Moonton</option>
-                            <option value="VK">Login Via VK</option>
-                            <option value="Facebook">Login Via Facebook</option>
-                            <option value="TikTok">Login Via TikTok</option>
-                        </select>
-                        <div class="alert alert-warning mt-2 p-2 mb-0" style="font-size: 0.75rem; color: #ffc107; background: rgba(255,193,7,0.1); border: 1px solid #ffc107;">
-                            <i class="fas fa-lock me-1"></i> Data aman & langsung dihapus.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mb-4">
-                    <div class="step-title">2. Pilih Item</div>
-                    <div class="row g-2" id="itemGrid"></div>
-                </div>
-
-                <div class="mb-4">
-                    <div class="step-title">3. Fitur Tambahan</div>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="checkReminder" onchange="toggleReminder()">
-                        <label class="form-check-label text-white" for="checkReminder">Aktifkan <strong>Smart Reminder</strong> <span class="badge bg-success ms-1">GRATIS</span></label>
-                    </div>
-                    <div class="p-2 mt-2" id="boxInputWa" style="display: none; background: rgba(56,189,248,0.1); border-left: 3px solid #38bdf8; border-radius: 4px;">
-                        <input type="number" class="form-control" id="userWa" placeholder="Nomor WhatsApp (Wajib)">
-                    </div>
-                </div>
-
-                <button onclick="kirimPesanan()" class="btn-pay"><i class="fas fa-wallet me-2"></i> BAYAR SEKARANG</button>
             </div>
         </div>
     </div>
-    
-    <footer>
-        <div class="text-center mt-5 mb-3 text-muted" style="font-size: 0.8rem;">
-            &copy; 2025 riziqstore.idn | Keep The Game Going 🚀
-        </div>
-    </footer>
 
     <script src="data.js"></script>
 
     <script>
-        const ADMIN_WA = "6281234567890"; // GANTI NOMOR WA
+        const ADMIN_WA = "628988889025";
 
-        // State
-        let currentGame = "";
-        let selectedItem = null;
-        let selectedPrice = 0;
-        let metodeInput = "UID";
+        let currentGame="", selectedItem=null, selectedPrice=0, metodeInput="UID";
 
-        // --- 1. RENDER HALAMAN DEPAN (GRID GAME) ---
-        function initHome() {
-            const gridContainer = document.getElementById('gameGridContainer');
-            gridContainer.innerHTML = "";
+        function generateOrderID(){
+        return "RZQ-"+Date.now().toString().slice(-6);
+        }
 
-            if (typeof DATA_GAME === 'undefined') {
-                gridContainer.innerHTML = "<p class='text-center text-danger'>Data Game Kosong. Gunakan Admin Panel.</p>";
-                return;
-            }
-
-            for (let gameName in DATA_GAME) {
-                let gameData = DATA_GAME[gameName];
-                // Pakai gambar default jika kosong
-                let imgUrl = gameData.image || "https://placehold.co/200x200?text=No+Image";
-
-                let col = document.createElement('div');
-                col.className = "col-4 col-md-3"; // 3 kolom di HP, 4 di Laptop
-                col.innerHTML = `
-                    <div class="game-grid-card" onclick="openOrderPage('${gameName}')">
-                        <div class="game-img-wrapper">
-                            <img src="${imgUrl}" alt="${gameName}">
-                        </div>
-                        <div class="game-title">${gameName}</div>
-                    </div>
-                `;
-                gridContainer.appendChild(col);
+        function initHome(){
+            const c=document.getElementById("gameGridContainer");
+            c.innerHTML="";
+            for(const g in DATA_GAME){
+                const d=DATA_GAME[g];
+                c.innerHTML+=`
+                <div class="col-4">
+                <div class="game-grid-card" onclick='openOrderPage(${JSON.stringify(g)})'>
+                <div class="game-img-wrapper"><img src="${d.image}"></div>
+                <div class="game-title">${g}</div>
+                </div>
+                </div>`;
             }
         }
 
-        // --- 2. PINDAH HALAMAN (HOME <-> ORDER) ---
-        function openOrderPage(gameName) {
-            currentGame = gameName;
-            
-            // Sembunyikan Home, Tampilkan Order
-            document.getElementById('homePage').style.display = 'none';
-            document.getElementById('orderPage').style.display = 'block';
-            window.scrollTo(0, 0); // Scroll ke atas
-
-            // Set Header Game
-            document.getElementById('selectedGameTitle').innerText = gameName;
-            let imgUrl = DATA_GAME[gameName].image || "https://placehold.co/100";
-            document.getElementById('selectedGameImg').src = imgUrl;
-
-            // Reset Form & Render
-            metodeInput = "UID";
-            document.getElementById('metodeUid').checked = true;
-            toggleMetode(); // Reset tampilan form
+        function openOrderPage(game){
+            currentGame=game;
+            homePage.style.display="none";
+            orderPage.style.display="block";
+            selectedGameTitle.innerText=game;
+            selectedGameImg.src=DATA_GAME[game].image;
+            toggleMetode();
             cekJamOperasional();
         }
 
-        function backToHome() {
-            document.getElementById('orderPage').style.display = 'none';
-            document.getElementById('homePage').style.display = 'block';
+        function backToHome(){
+            orderPage.style.display="none";
+            homePage.style.display="block";
         }
 
-        // --- 3. LOGIC ORDER PAGE (Update UI) ---
-        function toggleMetode() {
-            const isUid = document.getElementById('metodeUid').checked;
-            document.getElementById('formUid').style.display = isUid ? 'block' : 'none';
-            document.getElementById('formLogin').style.display = isUid ? 'none' : 'block';
-            metodeInput = isUid ? "UID" : "LOGIN";
-            
-            updateItemGrid(); // Refresh item
-            updateFormInput(); // Refresh form input (zone id)
+        function toggleMetode(){
+            metodeInput=metodeUid.checked?"UID":"LOGIN";
+            formUid.style.display=metodeInput==="UID"?"block":"none";
+            formLogin.style.display=metodeInput==="LOGIN"?"block":"none";
+            updateItemGrid();
         }
 
-        function updateFormInput() {
-            const data = DATA_GAME[currentGame];
-            if (metodeInput === "UID" && data.hasZone) {
-                document.getElementById('colUserId').className = "col-8";
-                document.getElementById('colZoneId').style.display = "block";
-                document.getElementById('zoneId').placeholder = data.zoneLabel || "Zone ID";
-            } else {
-                document.getElementById('colUserId').className = "col-12";
-                document.getElementById('colZoneId').style.display = "none";
-            }
-        }
+        function updateItemGrid(){
+            itemGrid.innerHTML="";
+            const items=metodeInput==="UID"
+            ?DATA_GAME[currentGame].items_uid
+            :DATA_GAME[currentGame].items_login;
 
-        function updateItemGrid() {
-            const grid = document.getElementById('itemGrid');
-            grid.innerHTML = "";
-            
-            const data = DATA_GAME[currentGame];
-            let items = (metodeInput === "UID") ? data.items_uid : data.items_login;
-
-            if (!items || items.length === 0) {
-                grid.innerHTML = `<div class="col-12 text-center text-muted py-3">Item tidak tersedia untuk metode ini.</div>`;
-                selectedItem = null;
-                return;
-            }
-
-            items.forEach((item, index) => {
-                let div = document.createElement('div');
-                div.className = "col-6";
-                let activeClass = (index === 0) ? "active" : "";
-                if(index === 0) { selectedItem = item.name; selectedPrice = item.price; }
-
-                div.innerHTML = `
-                    <div class="item-card text-center ${activeClass}" onclick="pilihItem(this, '${item.name}', ${item.price})">
-                        <div style="font-size:0.7rem; color:#cbd5e1">${item.label}</div>
-                        <div class="fw-bold my-1">${item.name}</div>
-                        <div style="color:#38bdf8; font-weight:700">Rp ${item.price.toLocaleString('id-ID')}</div>
-                    </div>
-                `;
-                grid.appendChild(div);
+            items.forEach((it,i)=>{
+                if(i===0){selectedItem=it.name;selectedPrice=it.price}
+                itemGrid.innerHTML+=`
+                <div class="col-6">
+                <div class="item-card ${i===0?"active":""}"
+                onclick="pilihItem(this,'${it.name}',${it.price})">
+                <div class="fw-bold">${it.name}</div>
+                <div class="text-info">Rp ${it.price.toLocaleString()}</div>
+                </div>
+                </div>`;
             });
         }
 
-        function pilihItem(el, name, price) {
-            document.querySelectorAll('.item-card').forEach(c => c.classList.remove('active'));
-            el.classList.add('active');
-            selectedItem = name; selectedPrice = price;
+        function pilihItem(el,n,p){
+            document.querySelectorAll(".item-card").forEach(x=>x.classList.remove("active"));
+            el.classList.add("active");
+            selectedItem=n;selectedPrice=p;
         }
 
-        // --- 4. UTILS & KIRIM PESAN ---
-        function toggleReminder() {
-            document.getElementById('boxInputWa').style.display = document.getElementById('checkReminder').checked ? 'block' : 'none';
+        function toggleReminder(){
+            boxInputWa.style.display=checkReminder.checked?"block":"none";
         }
 
-        function cekJamOperasional() {
-            const h = new Date().getHours();
-            const el = document.getElementById('storeStatus');
-            if(h >= 10 && h < 22) {
-                el.className = "alert alert-success text-center fw-bold mb-2"; el.innerHTML = "✅ TOKO BUKA (Fast Response)";
-            } else {
-                el.className = "alert alert-danger text-center fw-bold mb-2"; el.innerHTML = "⛔ TOKO TUTUP (Order Diproses Besok Pagi)";
-            }
+        function cekJamOperasional(){
+            const h=new Date().getHours();
+            storeStatus.className="alert "+(h>=10&&h<22?"alert-success":"alert-danger");
+            storeStatus.innerText=h>=10&&h<22?"TOKO BUKA":"TOKO TUTUP";
         }
 
-        function kirimPesanan() {
-            let isReminder = document.getElementById('checkReminder').checked;
-            let wa = document.getElementById('userWa').value;
-            let akun = "";
-            let config = DATA_GAME[currentGame];
+        function kirimPesanan(){
+            const orderID=generateOrderID();
+            let akun="";
 
-            if (!selectedItem) return Swal.fire({icon:'error', title:'Pilih Item Dulu!', background:'#1e293b', color:'#fff'});
-
-            if (metodeInput === "UID") {
-                let uid = document.getElementById('userId').value;
-                let zone = document.getElementById('zoneId').value;
-                if (!uid) return Swal.fire({icon:'error', title:'ID Kosong!', background:'#1e293b', color:'#fff'});
-                if (config.hasZone && !zone) return Swal.fire({icon:'error', title:`Isi ${config.zoneLabel}!`, background:'#1e293b', color:'#fff'});
-                let zoneText = config.hasZone ? ` (${zone})` : ""; 
-                akun = `🆔 *Metode:* Via UID%0A👤 *ID:* ${uid}${zoneText}`;
-            } else {
-                let email = document.getElementById('loginEmail').value;
-                let pass = document.getElementById('loginPass').value;
-                let via = document.getElementById('loginVia').value;
-                if (!email || !pass) return Swal.fire({icon:'error', title:'Isi Email & Pass!', background:'#1e293b', color:'#fff'});
-                akun = `🔐 *Metode:* Via LOGIN%0A📧 *Akun:* ${email}%0A🔑 *Pass:* ${pass}%0A🌐 *Via:* ${via}`;
+            if(metodeInput==="UID"){
+                if(!userId.value)return Swal.fire("Error","User ID kosong","error");
+                akun=`Metode: UID\nID: ${userId.value} ${zoneId.value||""}`;
+            }else{
+                if(!loginEmail.value||!loginPass.value)return Swal.fire("Error","Login kosong","error");
+                akun=`Metode: LOGIN\nAkun: ${loginEmail.value}\nVia: ${loginVia.value}`;
             }
 
-            let reminder = "🔕 *Reminder:* TIDAK";
-            if(isReminder) {
-                if(!wa) return Swal.fire({icon:'warning', title:'Isi No WA!', background:'#1e293b', color:'#fff'});
-                reminder = `🔔 *Reminder:* AKTIF%0A📱 *Buyer:* ${wa}`;
+            let reminder="OFF";
+            if(checkReminder.checked){
+                if(!userWa.value)return Swal.fire("Error","Isi No WA","warning");
+                reminder="ON - "+userWa.value;
             }
 
-            let pesan = `*ORDER BARU RIZIQSTORE.IDN*%0A----------------------------------%0A🎮 *Game:* ${currentGame}%0A${akun}%0A💎 *Item:* ${selectedItem}%0A💰 *Harga:* Rp ${selectedPrice.toLocaleString('id-ID')}%0A----------------------------------%0A${reminder}%0A%0A_Mohon diproses min!_`;
-            window.open(`https://wa.me/${ADMIN_WA}?text=${pesan}`, '_blank');
+            let pesan=`ORDER BARU RIZIQSTORE
+            Order ID: ${orderID}
+            Game: ${currentGame}
+            ${akun}
+            Item: ${selectedItem}
+            Harga: Rp ${selectedPrice.toLocaleString()}
+            Reminder: ${reminder}
+
+            Mohon diproses 🙏`;
+
+            const encoded=encodeURIComponent(pesan);
+            window.open(`https://wa.me/${ADMIN_WA}?text=${encoded}`,"_blank");
+
+            loginPass.value=""; // HAPUS PASSWORD
         }
 
-        // Jalankan
         initHome();
     </script>
+
 </body>
 </html>

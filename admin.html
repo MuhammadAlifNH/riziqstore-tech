@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - RiziqStore (With Images)</title>
+    <title>Admin Panel - RiziqStore</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -60,6 +60,9 @@
                         <div class="col-12 mt-2"><input type="number" id="itemPrice" class="form-control" placeholder="Harga (Rp)"></div>
                     </div>
                     <button onclick="addItem()" class="btn btn-success mt-3 w-100">Tambah Item</button>
+                    <div id="itemList" class="mt-2">
+                        <h6 class="text-info mt-2">Daftar Item</h6>
+                    </div>
                 </div>
             </div>
 
@@ -76,14 +79,42 @@
 
     <script>
         let DB = {};
+        let firstOutput = true;
+        let editIndex = null;
+        let editCategory = null;
+
 
         function renderList() {
-            let list = document.getElementById('gameList');
+            const list = document.getElementById('gameList');
             list.innerHTML = "";
-            let text = "const DATA_GAME = " + JSON.stringify(DB, null, 4) + ";";
-            document.getElementById('outputCode').value = text;
 
-            for(let key in DB) {
+            let output = "";
+
+            for (let key in DB) {
+                let game = DB[key];
+
+                let obj = {};
+                obj[key] = game;
+
+                let json = JSON.stringify(obj, null, 4);
+
+                // Hilangkan kurung luar { }
+                json = json.trim();
+                json = json.substring(1, json.length - 1);
+
+                // Tambah koma hanya jika BUKAN item pertama
+                if (!firstOutput) {
+                    output += "\n\t,\n";
+                }
+
+                output += json.replace(/^/gm, "\t");
+                firstOutput = false;
+            }
+
+            document.getElementById('outputCode').value = output;
+
+            // Render list UI
+            for (let key in DB) {
                 let img = DB[key].image || "https://placehold.co/50";
                 let li = document.createElement('li');
                 li.className = "list-group-item d-flex justify-content-between align-items-center";
@@ -92,31 +123,41 @@
                         <img src="${img}" style="width:40px; height:40px; border-radius:8px; object-fit:cover; margin-right:10px;">
                         <b>${key}</b>
                     </div>
-                    <button class="btn btn-sm btn-info" onclick="selectGame('${key}')">Atur Item</button>
+                    <div>
+                        <button class="btn btn-sm btn-info me-1" onclick="selectGame('${key}')">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteGame('${key}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 `;
                 list.appendChild(li);
             }
         }
 
         function addGame() {
-            let name = document.getElementById('gameName').value;
-            let image = document.getElementById('gameImage').value;
+            let name = document.getElementById('gameName').value.trim();
+            let image = document.getElementById('gameImage').value.trim();
             let hasZone = document.getElementById('hasZone').value === "true";
-            let zoneLabel = document.getElementById('zoneLabel').value;
+            let zoneLabel = document.getElementById('zoneLabel').value.trim();
 
-            if(!name) return alert("Nama Game Wajib Diisi!");
+            if (!name) return alert("Nama Game Wajib Diisi!");
 
-            if(!DB[name]) {
+            if (!DB[name]) {
                 DB[name] = {
-                    image: image, // Simpan URL Gambar
+                    image: image,
                     hasZone: hasZone,
                     zoneLabel: zoneLabel,
                     items_uid: [],
                     items_login: []
                 };
             }
+
+            firstOutput = true;
             renderList();
             selectGame(name);
+
             document.getElementById('gameName').value = "";
             document.getElementById('gameImage').value = "";
         }
@@ -124,31 +165,125 @@
         function selectGame(name) {
             document.getElementById('itemForm').style.display = 'block';
             document.getElementById('activeGameName').innerText = name;
+            renderItemList();
         }
 
+
         function addItem() {
-            let game = document.getElementById('activeGameName').innerText;
-            let category = document.getElementById('itemCategory').value;
-            let name = document.getElementById('itemName').value;
-            let label = document.getElementById('itemLabel').value;
-            let price = parseInt(document.getElementById('itemPrice').value);
+            const game = document.getElementById('activeGameName').innerText;
+            const category = document.getElementById('itemCategory').value;
+            const name = document.getElementById('itemName').value;
+            const label = document.getElementById('itemLabel').value;
+            const price = parseInt(document.getElementById('itemPrice').value);
 
-            if(!name || !price) return alert("Lengkapi Data!");
+            if (!name || !price) return alert("Lengkapi Data!");
 
-            let newItem = { name, price, label };
-            if (category === "UID") { DB[game].items_uid.push(newItem); } 
-            else { DB[game].items_login.push(newItem); }
-            
+            const list = category === "UID"
+                ? DB[game].items_uid
+                : DB[game].items_login;
+
+            if (editIndex !== null && editCategory === category) {
+                list[editIndex] = { name, label, price };
+                editIndex = null;
+                editCategory = null;
+            } else {
+                list.push({ name, label, price });
+            }
+
             renderList();
+            renderItemList();
+
             document.getElementById('itemName').value = "";
+            document.getElementById('itemLabel').value = "";
             document.getElementById('itemPrice').value = "";
         }
 
+        function renderItemList() {
+            const game = document.getElementById('activeGameName').innerText;
+            const box = document.getElementById('itemList');
+            box.innerHTML = "";
+
+            if (!DB[game]) return;
+
+            const allItems = [
+                { type: "UID", data: DB[game].items_uid },
+                { type: "LOGIN", data: DB[game].items_login }
+            ];
+
+            allItems.forEach(group => {
+                group.data.forEach((item, index) => {
+                    const div = document.createElement('div');
+                    div.className = "d-flex justify-content-between align-items-center border rounded p-2 mb-1";
+                    div.innerHTML = `
+                        <div>
+                            <b>${item.name}</b>
+                            <small class="text-muted">(${group.type})</small><br>
+                            <small>${item.label} - Rp ${item.price.toLocaleString()}</small>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-warning me-1" onclick="editItem('${group.type}', ${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteItem('${group.type}', ${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    box.appendChild(div);
+                });
+            });
+        }
+
+        function editItem(type, index) {
+            const game = document.getElementById('activeGameName').innerText;
+            const item = type === "UID"
+                ? DB[game].items_uid[index]
+                : DB[game].items_login[index];
+
+            document.getElementById('itemCategory').value = type;
+            document.getElementById('itemName').value = item.name;
+            document.getElementById('itemLabel').value = item.label;
+            document.getElementById('itemPrice').value = item.price;
+
+            editIndex = index;
+            editCategory = type;
+        }
+
+        function deleteItem(type, index) {
+            if (!confirm("Yakin hapus item ini?")) return;
+
+            const game = document.getElementById('activeGameName').innerText;
+
+            if (type === "UID") {
+                DB[game].items_uid.splice(index, 1);
+            } else {
+                DB[game].items_login.splice(index, 1);
+            }
+
+            renderList();
+            renderItemList();
+        }
+
+        function deleteGame(gameName) {
+            if (!confirm(`Yakin ingin menghapus game "${gameName}" beserta semua itemnya?`)) {
+                return;
+            }
+
+            delete DB[gameName];
+
+            // Reset form item
+            document.getElementById('itemForm').style.display = 'none';
+            document.getElementById('activeGameName').innerText = "";
+
+            renderList();
+        }
+
         function copyCode() {
-            document.getElementById('outputCode').select();
+            const out = document.getElementById('outputCode');
+            out.select();
             document.execCommand("copy");
             alert("Kode Tersalin!");
         }
-    </script>
+        </script>
 </body>
 </html>

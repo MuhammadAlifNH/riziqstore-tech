@@ -3,6 +3,7 @@
 
 const DATA_GAME = {
     "Mobile Legends": {
+        "image": "assets/games/mlbb.png",
         "hasZone": true,
         "zoneLabel": "Zone ID",
         "items_uid": [
@@ -13,5 +14,5 @@ const DATA_GAME = {
             { "name": "Weekly Diamond Pass", "price": 24000, "label": "Via Login Murah" },
             { "name": "Twilight Pass", "price": 140000, "label": "Promo Login" }
         ]
-    }
+    }// TEMPEL HASIL ADMIN DI SINI 👇
 };
