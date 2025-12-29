@@ -15,30 +15,34 @@
     </style>
 </head>
 <body>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-    (async function () {
+    (function () {
         const PASSWORD = atob("YWRtaW4xMjM=");
 
-        const { value: pass } = await Swal.fire({
-            title: "Admin Login",
-            input: "password",
-            inputLabel: "Masukkan password admin",
-            inputPlaceholder: "Password",
-            inputAttributes: { autocapitalize: "off" },
-            confirmButtonText: "Masuk",
-            allowOutsideClick: false,
-            allowEscapeKey: false
-        });
+        if (localStorage.getItem("admin_login") === "true") {
+        return;
+        }
 
-        if (pass !== PASSWORD) {
-            await Swal.fire("Akses Ditolak", "Password salah!", "error");
+        const input = prompt("Masukkan password admin:");
+
+        if (input !== PASSWORD) {
+            alert("Akses ditolak!");
             window.location.href = "index.html";
+        } else {
+            localStorage.setItem("admin_login", "true");
         }
     })();
     </script>
     <div class="container">
-        <h1 class="mb-4"><i class="fas fa-images"></i> Admin Panel (Galeri Game)</h1>
+        <<div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0">
+                <i class="fas fa-images"></i> Admin Panel - RiziqStore
+            </h1>
+
+            <button onclick="logout()" class="btn btn-danger btn-sm">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
         
         <div class="row">
             <div class="col-md-6">
@@ -306,6 +310,12 @@
             document.execCommand("copy");
             alert("Kode Tersalin!");
         }
+
+        function logout() {
+            localStorage.removeItem("admin_login");
+            window.location.href = "index.html";
+        }
+
         </script>
 </body>
 </html>
